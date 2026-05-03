@@ -25,6 +25,7 @@
 #include <QQmlEngine>
 #include <QFileInfo>
 #include <QDir>
+#include <QLocale>
 
 #include <KIO/CopyJob>
 
@@ -223,9 +224,9 @@ void FilePropertiesDialog::init()
         m_size = KIO::convertSize(m_items.first().size());
         m_location = info.dir().path();
 
-        m_creationTime = info.birthTime().toString(Qt::SystemLocaleLongDate);
-        m_modifiedTime = info.lastModified().toString(Qt::SystemLocaleLongDate);
-        m_accessedTime = info.lastRead().toString(Qt::SystemLocaleLongDate);
+        m_creationTime = info.birthTime().toString(Qt::ISODate);
+        m_modifiedTime = info.lastModified().toString(Qt::ISODate);
+        m_accessedTime = info.lastRead().toString(Qt::ISODate);
 
 //        m_creationTime = item.time(KFileItem::CreationTime).toString();
 //        m_modifiedTime = item.time(KFileItem::ModificationTime).toString();

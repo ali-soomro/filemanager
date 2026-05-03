@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.16)
 
 project(filemanager LANGUAGES CXX)
 
@@ -8,18 +8,19 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt5 COMPONENTS Core DBus Quick LinguistTools REQUIRED)
+find_package(Qt6 COMPONENTS Core DBus Quick LinguistTools REQUIRED)
 # find_package(FishUI REQUIRED)
 
-find_package(KF5KIO)
-find_package(KF5Solid)
-find_package(KF5WindowSystem)
-find_package(KF5Config)
+find_package(KF6KIO)
+find_package(KF6Solid)
+find_package(KF6WindowSystem)
+find_package(KF6Config)
+find_package(KF6XmlGui)
 
-qt5_add_dbus_adaptor(DBUS_SOURCES
+qt6_add_dbus_adaptor(DBUS_SOURCES
                      com.cutefish.FileManager.xml
                      application.h Application)
 
@@ -76,24 +77,23 @@ add_executable(cutefish-filemanager
 
 target_link_libraries(cutefish-filemanager
   PRIVATE
-  Qt5::Core
-  Qt5::DBus
-  Qt5::Quick
+  Qt6::Core
+  Qt6::DBus
+  Qt6::Quick
 
-  KF5::KIOCore
-  KF5::KIOFileWidgets
-  KF5::KIOWidgets
-  KF5::Solid
-  KF5::WindowSystem
-  KF5::ConfigCore
+  KF6::KIOCore
+  KF6::KIOFileWidgets
+  KF6::KIOWidgets
+  KF6::Solid
+  KF6::WindowSystem
+  KF6::ConfigCore
+  KF6::XmlGui
 
   # FishUI
 )
 
 file(GLOB TS_FILES translations/*.ts)
-qt5_create_translation(QM_FILES ${TS_FILES})
-add_custom_target(translations DEPENDS ${QM_FILES} SOURCES ${TS_FILES})
-add_dependencies(cutefish-filemanager translations)
+qt6_add_lrelease(cutefish-filemanager TS_FILES ${TS_FILES} QM_FILES_OUTPUT_VARIABLE QM_FILES)
 
 install(TARGETS cutefish-filemanager RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES cutefish-filemanager.desktop DESTINATION "/usr/share/applications")

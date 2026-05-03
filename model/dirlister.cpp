@@ -28,12 +28,3 @@ DirLister::~DirLister()
 {
 }
 
-void DirLister::handleError(KIO::Job *job)
-{
-    if (!autoErrorHandlingEnabled()) {
-        emit error(job->errorString());
-        return;
-    }
-
-    KDirLister::handleError(job);
-}
